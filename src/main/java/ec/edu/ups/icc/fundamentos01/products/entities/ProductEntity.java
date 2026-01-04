@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "products") 
 public class ProductEntity extends BaseModel {
-
     @Column(nullable = false, length = 150)
     private String name;
 

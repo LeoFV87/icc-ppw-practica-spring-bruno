@@ -12,7 +12,7 @@ import ec.edu.ups.icc.fundamentos01.users.repositories.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepo; 
+    private final UserRepository userRepo;
 
     public UserServiceImpl(UserRepository userRepo) {
         this.userRepo = userRepo;
@@ -35,12 +35,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto create(CreateUserDto dto) {
-        // Usamos el modelo de dominio para la lógica y convertimos a Entidad
-        User user = User.fromDto(dto);
-        UserEntity entity = user.toEntity();
+        if (userRepo.findByEmail(dto.getEmail()).isPresent()) {
+            throw new IllegalStateException("El email ya está registrado");
+        }
 
-        UserEntity saved = userRepo.save(entity); // Guardado real en Postgres
-        return UserMapper.toResponse(saved);
+        User user = User.fromDto(dto);
+        UserEntity saved = userRepo.save(user.toEntity());
+        return User.fromEntity(saved).toResponseDto();
     }
 
     @Override
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService {
     public void delete(int id) {
         userRepo.findById((long) id)
                 .ifPresentOrElse(
-                        userRepo::delete, 
+                        userRepo::delete,
                         () -> {
                             throw new IllegalStateException("Usuario no encontrado"); // Error si no existe
                         });

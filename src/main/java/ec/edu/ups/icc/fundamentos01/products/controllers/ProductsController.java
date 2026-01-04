@@ -16,6 +16,7 @@ import ec.edu.ups.icc.fundamentos01.products.dtos.PartialUpdateProductsDto;
 import ec.edu.ups.icc.fundamentos01.products.dtos.ProductsResponseDto;
 import ec.edu.ups.icc.fundamentos01.products.dtos.UpdateProductsDto;
 import ec.edu.ups.icc.fundamentos01.products.services.ProductsService;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -41,12 +42,12 @@ public class ProductsController {
     }
 
     @PostMapping
-    public ProductsResponseDto create(@RequestBody CreateProductsDto dto) {
+    public ProductsResponseDto create(@Valid @RequestBody CreateProductsDto dto) {
         return productsService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public Object update(@PathVariable("id") int id, @RequestBody UpdateProductsDto dto) {
+    public Object update(@PathVariable("id") int id, @Valid @RequestBody UpdateProductsDto dto) {
         return productsService.update(id, dto);
     }
 

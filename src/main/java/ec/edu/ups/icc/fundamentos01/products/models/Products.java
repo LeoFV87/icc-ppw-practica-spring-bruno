@@ -14,36 +14,35 @@ public class Products {
     private Integer stock;
     private String createdAt;
 
-    public Products() {
+    public Products(int id, String name, String description, Double price, Integer stock) {
+        if (name == null || name.isBlank()) throw new IllegalArgumentException("Nombre inválido");
+        if (price == null || price < 0) throw new IllegalArgumentException("El precio no puede ser negativo");
+        if (stock == null || stock < 0) throw new IllegalArgumentException("El stock no puede ser negativo");
+
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
     }
 
     public static Products fromDto(CreateProductsDto dto) {
-        Products p = new Products();
-        p.setName(dto.getName());
-        p.setDescription(dto.getDescription());
-        p.setPrice(dto.getPrice());
-        p.setStock(dto.getStock());
-        return p;
+        return new Products(0, dto.getName(), dto.getDescription(), dto.getPrice(), dto.getStock());
     }
 
     public static Products fromEntity(ProductEntity entity) {
-        Products p = new Products();
-        p.setId(entity.getId().intValue());
-        p.setName(entity.getName());
-        p.setDescription(entity.getDescription());
-        p.setPrice(entity.getPrice());
-        p.setStock(entity.getStock());
-        // Mapear la fecha de la entidad al modelo
-        if (entity.getCreatedAt() != null) {
-            p.setCreatedAt(entity.getCreatedAt().toString());
-        }
-        return p;
+        return new Products(
+            entity.getId().intValue(),
+            entity.getName(),
+            entity.getDescription(),
+            entity.getPrice(),
+            entity.getStock()
+        );
     }
 
-    public ProductEntity toEntity() {
+  public ProductEntity toEntity() {
         ProductEntity entity = new ProductEntity();
-        if (this.id > 0)
-            entity.setId((long) this.id);
+        if (this.id > 0) entity.setId((long) this.id);
         entity.setName(this.name);
         entity.setDescription(this.description);
         entity.setPrice(this.price);
@@ -53,7 +52,6 @@ public class Products {
 
     public ProductsResponseDto toResponseDto() {
         ProductsResponseDto dto = new ProductsResponseDto();
-        // ERROR 3: Estos métodos fallarán si no pusiste Setters en ProductsResponseDto
         dto.setId(this.id);
         dto.setName(this.name);
         dto.setPrice(this.price);

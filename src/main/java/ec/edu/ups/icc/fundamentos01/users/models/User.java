@@ -13,8 +13,16 @@ public class User {
     private String password;
     private String createdAt;
 
-    // Constructor vacío necesario para los Factory Methods
-    public User() {}
+    public User(int id, String name, String email, String password) {
+        if (name == null || name.isBlank()) throw new IllegalArgumentException("Nombre inválido");
+        if (email == null || !email.contains("@")) throw new IllegalArgumentException("Email inválido");
+        if (password == null || password.length() < 8) throw new IllegalArgumentException("Password inválido");
+
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
     // Constructor parametrizado para lógica interna
     public User(int id, String name, String email, String password, String createdAt) {
@@ -31,13 +39,7 @@ public class User {
      * Crea un User desde un DTO de creación.
      */
     public static User fromDto(CreateUserDto dto) {
-        User user = new User();
-        user.setId(0); // El ID se asignará en la BD
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        user.setCreatedAt(java.time.LocalDateTime.now().toString());
-        return user;
+        return new User(0, dto.getName(), dto.getEmail(), dto.getPassword());
     }
 
     /**
@@ -45,11 +47,10 @@ public class User {
      */
     public static User fromEntity(UserEntity entity) {
         return new User(
-            entity.getId().intValue(), // Long -> int
+            entity.getId().intValue(),
             entity.getName(),
             entity.getEmail(),
-            entity.getPassword(),
-            entity.getCreatedAt() != null ? entity.getCreatedAt().toString() : null
+            entity.getPassword()
         );
     }
 
