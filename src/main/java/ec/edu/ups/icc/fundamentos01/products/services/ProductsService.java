@@ -1,6 +1,7 @@
 package ec.edu.ups.icc.fundamentos01.products.services;
 
 import java.util.List;
+import java.util.Map;
 
 import ec.edu.ups.icc.fundamentos01.products.dtos.CreateProductsDto;
 import ec.edu.ups.icc.fundamentos01.products.dtos.PartialUpdateProductsDto;
@@ -18,6 +19,6 @@ public interface ProductsService {
 
     List<ProductsResponseDto> findByUserId(Long userId);
     List<ProductsResponseDto> findByCategoryId(Long categoryId);
-
+    Map<String, Object> countProductsByCategory(Long categoryId);
 
 }

@@ -1,9 +1,7 @@
 package ec.edu.ups.icc.fundamentos01.products.dtos;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import java.util.Set;
 
 public class CreateProductsDto {
     @NotBlank(message = "El nombre del producto es obligatorio")
@@ -16,18 +14,18 @@ public class CreateProductsDto {
     @Min(value = 0, message = "El precio no puede ser negativo")
     private Double price;
 
-
-    @Min(value = 0, message = "El stock no puede ser negativo")
+    // Sin @NotNull en stock para compatibilidad
     private Integer stock;
 
-    // === CAMPOS OBLIGATORIOS PARA EL SCRIPT ===
     @NotNull(message = "El userId es obligatorio")
     private Long userId;
 
-    @NotNull(message = "El categoryId es obligatorio")
-    private Long categoryId;
+    // === AHORA RECIBIMOS UNA LISTA DE IDs ===
+    @NotNull(message = "Debe especificar al menos una categoría")
+    @Size(min = 1, message = "El producto debe tener al menos una categoría")
+    private Set<Long> categoryIds;
 
-    // Getters y Setters (Asegúrate de tener los de userId y categoryId)
+    // Getters y Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }
@@ -38,6 +36,8 @@ public class CreateProductsDto {
     public void setStock(Integer stock) { this.stock = stock; }
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
-    public Long getCategoryId() { return categoryId; }
-    public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
+    
+    // Ojo al nombre plural
+    public Set<Long> getCategoryIds() { return categoryIds; }
+    public void setCategoryIds(Set<Long> categoryIds) { this.categoryIds = categoryIds; }
 }

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.util.Set; // Import necesario
 
 public class UpdateProductsDto {
     @NotBlank(message = "El nombre del producto es obligatorio")
@@ -14,17 +15,18 @@ public class UpdateProductsDto {
     private String description;
 
     @NotNull(message = "El precio es obligatorio")
-    @Min(value = 0, message = "El precio no puede ser negativo") //
+    @Min(value = 0, message = "El precio no puede ser negativo")
     private Double price;
 
-    @Min(value = 0, message = "El stock no puede ser negativo") //
+    @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
 
-    @NotNull(message = "El ID de la categoría es obligatorio")
-    public Long categoryId;
+    // === CAMBIO CLAVE: Set de IDs en lugar de un solo ID ===
+    private Set<Long> categoryIds;
 
     public UpdateProductsDto() {}
 
+    // Getters y Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -37,8 +39,7 @@ public class UpdateProductsDto {
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }
 
-    public Long getCategoryId() { return categoryId; }
-    public void setCategoryId(Long categoryId) { this.categoryId = categoryId; }
-
+    // === NUEVOS GETTER Y SETTER PLURALES ===
+    public Set<Long> getCategoryIds() { return categoryIds; }
+    public void setCategoryIds(Set<Long> categoryIds) { this.categoryIds = categoryIds; }
 }
-

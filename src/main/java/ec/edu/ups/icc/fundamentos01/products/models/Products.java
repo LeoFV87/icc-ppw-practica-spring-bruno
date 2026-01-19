@@ -3,9 +3,9 @@ package ec.edu.ups.icc.fundamentos01.products.models;
 import ec.edu.ups.icc.fundamentos01.categories.entity.CategoryEntity;
 import ec.edu.ups.icc.fundamentos01.products.dtos.CreateProductsDto;
 import ec.edu.ups.icc.fundamentos01.products.dtos.UpdateProductsDto;
-import ec.edu.ups.icc.fundamentos01.products.dtos.PartialUpdateProductsDto;
 import ec.edu.ups.icc.fundamentos01.products.entities.ProductEntity;
 import ec.edu.ups.icc.fundamentos01.users.entities.UserEntity;
+import java.util.Set; // Import necesario
 
 public class Products {
     private Long id;
@@ -14,7 +14,7 @@ public class Products {
     private Double price;
     private Integer stock;
 
-    //Getters y Setters
+    // Getters y Setters
     public Long getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
@@ -37,6 +37,7 @@ public class Products {
     }
 
     public static Products fromEntity(ProductEntity entity) {
+        if (entity == null) return null;
         Products p = new Products();
         p.id = entity.getId();
         p.name = entity.getName();
@@ -46,15 +47,16 @@ public class Products {
         return p;
     }
 
-    public ProductEntity toEntity(UserEntity owner, CategoryEntity category) {
+    // === CAMBIO CLAVE: Recibir Set<CategoryEntity> ===
+    public ProductEntity toEntity(UserEntity owner, Set<CategoryEntity> categories) {
         ProductEntity entity = new ProductEntity();
         entity.setId(this.id);
         entity.setName(this.name);
         entity.setDescription(this.description);
         entity.setPrice(this.price);
         entity.setStock(this.stock);
-        entity.setOwner(owner); //
-        entity.setCategory(category); //
+        entity.setOwner(owner);
+        entity.setCategories(categories); // Ahora usa el método correcto N:N
         return entity;
     }
 
@@ -62,13 +64,7 @@ public class Products {
         this.name = dto.getName();
         this.price = dto.getPrice();
         this.stock = dto.getStock();
-        return this;
-    }
-
-    public Products partialUpdate(PartialUpdateProductsDto dto) {
-        if (dto.getName() != null) this.name = dto.getName();
-        if (dto.getPrice() != null) this.price = dto.getPrice();
-        if (dto.getStock() != null) this.stock = dto.getStock();
+        this.description = dto.getDescription(); // Asegúrate de actualizar esto también
         return this;
     }
 }
