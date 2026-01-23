@@ -25,7 +25,22 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
     runtimeOnly("org.postgresql:postgresql")
+
+	// Spring Security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	// JWT - JSON Web Token
+	implementation("io.jsonwebtoken:jjwt-api:0.12.3")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
+
+	// Jackson para manejo de fechas Java 8+ (LocalDateTime, LocalDate, etc.)
+	// NECESARIO: ErrorResponse usa LocalDateTime que requiere este módulo
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	
+	// Tests de seguridad
+	testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.withType<Test> {
