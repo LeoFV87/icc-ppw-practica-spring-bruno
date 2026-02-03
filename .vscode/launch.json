@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot",
+            "request": "launch",
+            "mainClass": "ec.edu.ups.icc.fundamentos01.Fundamentos01Application",
+            "projectName": "fundamentos01",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
